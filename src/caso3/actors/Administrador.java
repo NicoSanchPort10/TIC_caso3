@@ -4,7 +4,7 @@ import caso3.model.Evento;
 import caso3.sync.Buzon;
 import java.util.Random;
 
-public final class Administrador extends ActorCaso3 {
+public final class Administrador extends Actor {
     private final int numeroClasificadores;
     private final Buzon<Evento> buzonAlertas;
     private final Buzon<Evento> buzonClasificacion;

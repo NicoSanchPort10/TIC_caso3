@@ -1,7 +1,7 @@
 package caso3.actors;
 
-abstract class ActorCaso3 extends Thread {
-    ActorCaso3(String nombre) {
+abstract class Actor extends Thread {
+    Actor(String nombre) {
         super(nombre);
     }
 

@@ -5,7 +5,7 @@ import caso3.sync.Buzon;
 import caso3.sync.CoordinadorClasificadores;
 import java.util.List;
 
-public final class Clasificador extends ActorCaso3 {
+public final class Clasificador extends Actor {
     private final int clasificadorId;
     private final Buzon<Evento> buzonClasificacion;
     private final List<Buzon<Evento>> buzonesConsolidacion;

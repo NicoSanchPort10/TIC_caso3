@@ -4,7 +4,7 @@ import caso3.model.Evento;
 import caso3.sync.Buzon;
 import java.util.Random;
 
-public final class Sensor extends ActorCaso3 {
+public final class Sensor extends Actor {
     private final int sensorId;
     private final int eventosAProducir;
     private final int numeroServidores;

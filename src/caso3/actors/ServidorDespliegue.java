@@ -4,7 +4,7 @@ import caso3.model.Evento;
 import caso3.sync.Buzon;
 import java.util.Random;
 
-public final class ServidorDespliegue extends ActorCaso3 {
+public final class ServidorDespliegue extends Actor {
     private final int servidorId;
     private final Buzon<Evento> buzonConsolidacion;
     private final Random random = new Random();
