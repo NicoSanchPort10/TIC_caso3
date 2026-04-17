@@ -25,16 +25,25 @@ public final class Broker extends Actor {
 
     @Override
     public void run() {
-        /*
-         * TODO:
-         * 1. Retirar totalEventosEsperados eventos de buzonEntrada.
-         * 2. Para cada evento, generar un numero entre 0 y 200.
-         * 3. Si es multiplo de 8, depositar en buzonAlertas.
-         * 4. Si no es multiplo de 8, depositar en buzonClasificacion.
-         * 5. Al terminar, enviar Evento.fin("broker") al buzon de alertas.
-         */
-        pendiente("procesar " + totalEventosEsperados + " eventos desde " + buzonEntrada.nombre()
-                + " hacia " + buzonAlertas.nombre() + " o " + buzonClasificacion.nombre());
+        Random generador = random;
+        Buzon<Evento> entrada = buzonEntrada;
+        Buzon<Evento> alertas = buzonAlertas;
+        Buzon<Evento> clasificacion = buzonClasificacion;
+
+        try {
+            for (int i = 0; i < totalEventosEsperados; i++) {
+                Evento evento = entrada.retirar();
+                if (generador.nextInt(201) % 8 == 0) {
+                    alertas.depositar(evento);
+                } else {
+                    clasificacion.depositar(evento);
+                }
+            }
+
+            alertas.depositar(Evento.fin("broker"));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     @SuppressWarnings("unused")

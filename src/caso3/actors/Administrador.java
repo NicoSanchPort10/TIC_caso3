@@ -22,21 +22,37 @@ public final class Administrador extends Actor {
 
     @Override
     public void run() {
-        /*
-         * TODO:
-         * 1. Retirar eventos del buzon de alertas hasta recibir un evento de fin.
-         * 2. Para cada alerta, generar un numero entre 0 y 20.
-         * 3. Si es multiplo de 4, reenviar al buzon de clasificacion.
-         * 4. Si no es multiplo de 4, descartar.
-         * 5. Antes de terminar, enviar numeroClasificadores eventos de fin al
-         *    buzon de clasificacion.
-         */
-        pendiente("leer " + buzonAlertas.nombre() + " y avisar fin a "
-                + numeroClasificadores + " clasificadores por " + buzonClasificacion.nombre());
+        Buzon<Evento> alertas = buzonAlertas;
+        Buzon<Evento> clasificacion = buzonClasificacion;
+        int clasificadores = numeroClasificadores;
+        try {
+            Evento evento = alertas.retirar();
+            while (!evento.esFin()) {
+                int numero = random.nextInt(21);
+
+                if (numero % 4 == 0){
+                    clasificacion.depositar(evento);
+                }
+
+                evento = alertas.retirar();
+            }
+            
+
+            for (int i = 0; i < clasificadores; i ++) {
+                clasificacion.depositar(Evento.fin("administrador"));
+            }
+            
+            
+
+        } catch (InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+
+
+
+
+       
     }
 
-    @SuppressWarnings("unused")
-    private boolean alertaInofensiva() {
-        return random.nextInt(21) % 4 == 0;
-    }
+    
 }
