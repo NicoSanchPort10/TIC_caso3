@@ -9,6 +9,7 @@ import caso3.model.Evento;
 import caso3.sync.Buzon;
 import caso3.sync.BuzonIlimitado;
 import caso3.sync.BuzonLimitado;
+import caso3.sync.BuzonSemiActivo;
 import caso3.sync.CoordinadorClasificadores;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -27,8 +28,12 @@ public final class Main {
         Config config = Config.fromFile(Path.of(args[0]));
         System.out.println("Configuracion cargada: " + config);
 
+        
         Buzon<Evento> buzonEntrada = new BuzonIlimitado<>("entrada");
-        Buzon<Evento> buzonAlertas = new BuzonIlimitado<>("alertas");
+
+        
+        Buzon<Evento> buzonAlertas = new BuzonSemiActivo<>("alertas");
+
         Buzon<Evento> buzonClasificacion = new BuzonLimitado<>(
                 "clasificacion",
                 config.tamanoBuzonClasificacion());
@@ -80,8 +85,6 @@ public final class Main {
                     buzonesConsolidacion.get(servidorId - 1)));
         }
 
-        // TODO: despues de implementar los run(), esta seccion debe iniciar y unir
-        // todos los hilos para ejecutar la simulacion completa.
         for (Thread hilo : hilos) {
             hilo.start();
         }
@@ -90,7 +93,7 @@ public final class Main {
             hilo.join();
         }
 
-        System.out.println("Base ejecutada. Revisa los TODOs de cada actor para completar el caso.");
+        System.out.println("Simulacion completada.");
         imprimirEstadoBuzones(buzonEntrada, buzonAlertas, buzonClasificacion, buzonesConsolidacion);
     }
 
@@ -99,7 +102,7 @@ public final class Main {
             Buzon<Evento> buzonAlertas,
             Buzon<Evento> buzonClasificacion,
             List<Buzon<Evento>> buzonesConsolidacion) {
-        System.out.println("Estado final de buzones:");
+        System.out.println("Estado final de buzones (deben ser todos 0):");
         System.out.println("- " + buzonEntrada.nombre() + ": " + buzonEntrada.tamano());
         System.out.println("- " + buzonAlertas.nombre() + ": " + buzonAlertas.tamano());
         System.out.println("- " + buzonClasificacion.nombre() + ": " + buzonClasificacion.tamano());
@@ -109,3 +112,4 @@ public final class Main {
         }
     }
 }
+

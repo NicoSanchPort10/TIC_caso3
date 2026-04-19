@@ -25,24 +25,28 @@ public final class Broker extends Actor {
 
     @Override
     public void run() {
-        Random generador = random;
-        Buzon<Evento> entrada = buzonEntrada;
-        Buzon<Evento> alertas = buzonAlertas;
-        Buzon<Evento> clasificacion = buzonClasificacion;
+        int anomalos = 0;
+        int normales = 0;
 
         try {
             for (int i = 0; i < totalEventosEsperados; i++) {
-                Evento evento = entrada.retirar();
-                if (generador.nextInt(201) % 8 == 0) {
-                    alertas.depositar(evento);
+                Evento evento = buzonEntrada.retirar();
+                int numero = random.nextInt(201);
+
+                if (numero % 8 == 0) {
+                    buzonAlertas.depositar(evento);
+                    anomalos++;
                 } else {
-                    clasificacion.depositar(evento);
+                    buzonClasificacion.depositar(evento);
+                    normales++;
                 }
             }
 
-            alertas.depositar(Evento.fin("broker"));
+            System.out.println("Broker termino. Anomalos: " + anomalos + ", Normales: " + normales);
+            buzonAlertas.depositar(Evento.fin("broker"));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
 }
+

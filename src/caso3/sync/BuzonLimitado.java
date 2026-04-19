@@ -19,7 +19,6 @@ public final class BuzonLimitado<T> implements Buzon<T> {
 
     @Override
     public synchronized void depositar(T elemento) throws InterruptedException {
-        // Espera pasiva: si el buzon esta lleno, el productor espera.
         while (elementos.size() == capacidad) {
             wait();
         }

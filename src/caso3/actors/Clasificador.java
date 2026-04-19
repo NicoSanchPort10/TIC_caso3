@@ -25,15 +25,29 @@ public final class Clasificador extends Actor {
 
     @Override
     public void run() {
-        /*
-         * TODO:
-         * 1. Retirar eventos del buzon de clasificacion.
-         * 2. Si recibe un evento de fin, registrar terminacion en coordinador.
-         * 3. Si es el ultimo clasificador en terminar, enviar fin a servidores.
-         * 4. Si es evento normal, calcular indice tipoServidor - 1.
-         * 5. Depositar el evento en el buzon de consolidacion correcto.
-         */
-        pendiente("clasificar eventos de " + buzonClasificacion.nombre()
-                + " entre " + buzonesConsolidacion.size() + " servidores");
+        int procesados = 0;
+
+        try {
+            Evento evento = buzonClasificacion.retirar();
+
+            while (!evento.esFin()) {
+                
+                int destino = evento.tipoServidor() - 1;
+                buzonesConsolidacion.get(destino).depositar(evento);
+                procesados++;
+                evento = buzonClasificacion.retirar();
+            }
+
+            System.out.println(getName() + " termino. Eventos clasificados: " + procesados);
+
+            boolean esUltimo = coordinador.registrarTerminacion();
+            if (esUltimo) {
+                System.out.println(getName() + " es el ultimo. Enviando fin a servidores.");
+                coordinador.enviarFinesAServidores("clasificador-" + clasificadorId);
+            }
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

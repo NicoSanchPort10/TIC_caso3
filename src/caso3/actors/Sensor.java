@@ -11,11 +11,7 @@ public final class Sensor extends Actor {
     private final Buzon<Evento> buzonEntrada;
     private final Random random = new Random();
 
-    public Sensor(
-            int sensorId,
-            int eventosAProducir,
-            int numeroServidores,
-            Buzon<Evento> buzonEntrada) {
+    public Sensor(int sensorId, int eventosAProducir, int numeroServidores, Buzon<Evento> buzonEntrada) {
         super("Sensor-" + sensorId);
         this.sensorId = sensorId;
         this.eventosAProducir = eventosAProducir;
@@ -25,18 +21,15 @@ public final class Sensor extends Actor {
 
     @Override
     public void run() {
-        Random generador = random;
-        int servidores = numeroServidores;
-        int id = sensorId;
-        Buzon<Evento> destino = buzonEntrada;
-
         try {
             for (int secuencia = 1; secuencia <= eventosAProducir; secuencia++) {
-                int tipoServidor = generador.nextInt(servidores) + 1;
-                destino.depositar(Evento.normal(id, secuencia, tipoServidor));
+                int tipoServidor = random.nextInt(numeroServidores) + 1;
+                buzonEntrada.depositar(Evento.normal(sensorId, secuencia, tipoServidor));
             }
+            System.out.println(getName() + " termino. Eventos generados: " + eventosAProducir);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
 }
+

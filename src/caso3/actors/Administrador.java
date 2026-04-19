@@ -22,24 +22,24 @@ public final class Administrador extends Actor {
 
     @Override
     public void run() {
-        Buzon<Evento> alertas = buzonAlertas;
-        Buzon<Evento> clasificacion = buzonClasificacion;
-        int clasificadores = numeroClasificadores;
+        int reenviados = 0;
+        int descartados = 0;
         try {
-            Evento evento = alertas.retirar();
+            Evento evento = buzonAlertas.retirar();
             while (!evento.esFin()) {
                 int numero = random.nextInt(21);
 
-                if (numero % 4 == 0){
-                    clasificacion.depositar(evento);
+                if (numero % 4 == 0) {
+                    buzonClasificacion.depositar(evento);
+                    reenviados++;
+                } else {
+                    descartados++;
                 }
-
-                evento = alertas.retirar();
             }
             
 
-            for (int i = 0; i < clasificadores; i ++) {
-                clasificacion.depositar(Evento.fin("administrador"));
+            for (int i = 0; i < numeroClasificadores; i ++) {
+                buzonClasificacion.depositar(Evento.fin("administrador"));
             }
             
             
@@ -47,12 +47,5 @@ public final class Administrador extends Actor {
         } catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }
-
-
-
-
-       
-    }
-
-    
+    }  
 }
