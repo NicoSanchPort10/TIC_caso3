@@ -36,19 +36,4 @@ public final class Clasificador extends Actor {
         pendiente("clasificar eventos de " + buzonClasificacion.nombre()
                 + " entre " + buzonesConsolidacion.size() + " servidores");
     }
-
-    @SuppressWarnings("unused")
-    private int indiceServidor(Evento evento) {
-        return evento.tipoServidor() - 1;
-    }
-
-    @SuppressWarnings("unused")
-    private int clasificadorId() {
-        return clasificadorId;
-    }
-
-    @SuppressWarnings("unused")
-    private CoordinadorClasificadores coordinador() {
-        return coordinador;
-    }
 }

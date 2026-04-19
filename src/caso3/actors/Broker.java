@@ -45,9 +45,4 @@ public final class Broker extends Actor {
             Thread.currentThread().interrupt();
         }
     }
-
-    @SuppressWarnings("unused")
-    private boolean esAnomalo() {
-        return random.nextInt(201) % 8 == 0;
-    }
 }

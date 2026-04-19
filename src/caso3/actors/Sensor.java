@@ -39,14 +39,4 @@ public final class Sensor extends Actor {
             Thread.currentThread().interrupt();
         }
     }
-
-    @SuppressWarnings("unused")
-    private int generarTipoServidor() {
-        return random.nextInt(numeroServidores) + 1;
-    }
-
-    @SuppressWarnings("unused")
-    private int sensorId() {
-        return sensorId;
-    }
 }

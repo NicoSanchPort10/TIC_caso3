@@ -17,23 +17,20 @@ public final class ServidorDespliegue extends Actor {
 
     @Override
     public void run() {
-        /*
-         * TODO:
-         * 1. Retirar eventos del buzon de consolidacion.
-         * 2. Si recibe evento de fin, terminar.
-         * 3. Para cada evento normal, dormir entre 100 ms y 1000 ms.
-         * 4. Registrar metricas: cuantos eventos proceso este servidor.
-         */
-        pendiente("procesar eventos desde " + buzonConsolidacion.nombre());
-    }
+        int eventosProcesados = 0;
 
-    @SuppressWarnings("unused")
-    private long tiempoProcesamientoMs() {
-        return random.nextInt(901) + 100L;
-    }
-
-    @SuppressWarnings("unused")
-    private int servidorId() {
-        return servidorId;
+        try {
+            Evento evento = buzonConsolidacion.retirar();
+            while (!evento.esFin()) {
+                Thread.sleep(100 + random.nextInt(901));
+                eventosProcesados++;
+                evento = buzonConsolidacion.retirar();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            System.out.println("Servidor " + servidorId
+                    + " proceso " + eventosProcesados + " eventos.");
+        }
     }
 }
