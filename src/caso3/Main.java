@@ -102,7 +102,6 @@ public final class Main {
             Buzon<Evento> buzonAlertas,
             Buzon<Evento> buzonClasificacion,
             List<Buzon<Evento>> buzonesConsolidacion) {
-        System.out.println("Estado final de buzones (deben ser todos 0):");
         System.out.println("- " + buzonEntrada.nombre() + ": " + buzonEntrada.tamano());
         System.out.println("- " + buzonAlertas.nombre() + ": " + buzonAlertas.tamano());
         System.out.println("- " + buzonClasificacion.nombre() + ": " + buzonClasificacion.tamano());

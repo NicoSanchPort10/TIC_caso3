@@ -19,7 +19,6 @@ public final class BuzonIlimitado<T> implements Buzon<T> {
 
     @Override
     public synchronized T retirar() throws InterruptedException {
-        // Espera pasiva: el hilo libera el monitor hasta que alguien deposite.
         while (elementos.isEmpty()) {
             wait();
         }

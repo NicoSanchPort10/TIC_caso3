@@ -29,7 +29,6 @@ public final class BuzonLimitado<T> implements Buzon<T> {
 
     @Override
     public synchronized T retirar() throws InterruptedException {
-        // Espera pasiva: si el buzon esta vacio, el consumidor espera.
         while (elementos.isEmpty()) {
             wait();
         }

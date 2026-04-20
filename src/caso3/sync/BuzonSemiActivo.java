@@ -27,7 +27,6 @@ public class BuzonSemiActivo<T> implements Buzon<T> {
                     notifyAll();
                     return elemento;
                 }
-
                 wait(1);
             }
 
