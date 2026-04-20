@@ -1,0 +1,6 @@
+numeroSensores=2
+eventosBase=3
+numeroClasificadores=2
+numeroServidores=2
+tamanoBuzonClasificacion=4
+tamanoBuzonConsolidacion=3

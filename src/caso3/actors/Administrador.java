@@ -35,6 +35,7 @@ public final class Administrador extends Actor {
                 } else {
                     descartados++;
                 }
+                evento = buzonAlertas.retirar();
             }
             
 

@@ -12,24 +12,27 @@ public class BuzonSemiActivo<T> implements Buzon<T> {
         this.nombre = nombre;
     }
 
-    
     @Override
     public synchronized void depositar(T elemento) {
         elementos.add(elemento);
-        
+        notifyAll();
     }
 
-    
     @Override
     public T retirar() throws InterruptedException {
-    while (elementos.isEmpty()) {
-            wait(1);
+        while (true) {
+            synchronized (this) {
+                if (!elementos.isEmpty()) {
+                    T elemento = elementos.remove();
+                    notifyAll();
+                    return elemento;
+                }
+
+                wait(1);
+            }
+
             Thread.yield();
         }
-
-        T elemento = elementos.remove();
-        notifyAll();
-        return elemento;
     }
 
     @Override
